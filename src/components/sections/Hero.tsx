@@ -36,9 +36,11 @@ export function Hero() {
             <Button variant="primary" icon={ArrowRight} iconPosition="right">
               Start Formatting
             </Button>
-            <Button variant="outline" icon={LayoutTemplate}>
-              View Templates
-            </Button>
+            <a href="#templates" className="inline-flex">
+              <Button variant="outline" icon={LayoutTemplate} className="w-full sm:w-auto">
+                View Templates
+              </Button>
+            </a>
           </div>
         </div>
 

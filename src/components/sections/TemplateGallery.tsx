@@ -5,6 +5,9 @@ import { SectionHeader } from '../ui/SectionHeader'
 
 const VISIBLE_DEFAULT = 4
 
+const line = 'h-1.5 rounded-sm bg-[#2f2f2f]/20'
+const lineShort = 'h-1.5 rounded-sm bg-[#2f2f2f]/15'
+
 function MiniDocumentPreview({ variant, accent }: { variant: string; accent: string }) {
   switch (variant) {
     case 'classic':
@@ -12,12 +15,12 @@ function MiniDocumentPreview({ variant, accent }: { variant: string; accent: str
         <div className="flex h-full flex-col p-3">
           <div className="mx-auto mb-2 h-1 w-12 rounded" style={{ backgroundColor: accent }} />
           <div className="mx-auto mb-3 h-2 w-20 rounded bg-secondary/20" />
-          <div className="space-y-1.5">
-            <div className="h-1 w-full rounded bg-secondary/10" />
-            <div className="h-1 w-[90%] rounded bg-secondary/10" />
-            <div className="h-1 w-full rounded bg-secondary/10" />
-            <div className="mt-2 h-1 w-1/3 rounded bg-secondary/15" />
-            <div className="h-1 w-full rounded bg-secondary/10" />
+          <div className="space-y-2">
+            <div className={`w-full ${line}`} />
+            <div className={`w-[90%] ${line}`} />
+            <div className={`w-full ${line}`} />
+            <div className={`mt-2 w-1/3 ${lineShort}`} />
+            <div className={`w-full ${line}`} />
           </div>
           <div className="mt-auto pt-2 text-center text-[8px] text-muted">Page 1</div>
         </div>
@@ -185,7 +188,13 @@ function MiniDocumentPreview({ variant, accent }: { variant: string; accent: str
       )
 
     default:
-      return null
+      return (
+        <div className="flex h-full flex-col items-center justify-center gap-2 p-4">
+          <div className={`w-3/4 ${line}`} />
+          <div className={`w-1/2 ${lineShort}`} />
+          <span className="text-[10px] text-muted">Template preview</span>
+        </div>
+      )
   }
 }
 
@@ -205,14 +214,19 @@ export function TemplateGallery() {
           description="Each template is crafted for academic clarity — preview the structure before you format."
         />
 
+        {templates.length === 0 ? (
+          <p className="text-center text-muted">No templates available.</p>
+        ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {visibleTemplates.map((template) => (
             <article
               key={template.id}
               className="group overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-soft-lg"
             >
-              <div className="aspect-[3/4] border-b border-border bg-background/50 transition-colors group-hover:bg-background">
-                <MiniDocumentPreview variant={template.id} accent={template.accent} />
+              <div className="relative aspect-[3/4] w-full overflow-hidden border-b border-border bg-white transition-colors group-hover:bg-[#faf8f5]">
+                <div className="absolute inset-0">
+                  <MiniDocumentPreview variant={template.id} accent={template.accent} />
+                </div>
               </div>
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2">
@@ -237,6 +251,7 @@ export function TemplateGallery() {
             </article>
           ))}
         </div>
+        )}
 
         <div className="mt-10 flex justify-center sm:mt-12">
           <button
