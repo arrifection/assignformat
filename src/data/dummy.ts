@@ -4,6 +4,7 @@ export const templates = [
     name: 'Classic University',
     description: 'Traditional margins, centered title, numbered sections.',
     accent: '#8B1E3F',
+    popular: true,
   },
   {
     id: 'minimal',
@@ -23,7 +24,43 @@ export const templates = [
     description: 'Abstract block, citations, academic heading hierarchy.',
     accent: '#5C4D7A',
   },
-] as const
+  {
+    id: 'formal-report',
+    name: 'Formal Report',
+    description: 'Executive summary block, section numbering, footer page count.',
+    accent: '#3D5A80',
+  },
+  {
+    id: 'thesis',
+    name: 'Thesis Layout',
+    description: 'Chapter headings, table of contents, wide academic margins.',
+    accent: '#4A3728',
+  },
+  {
+    id: 'notebook',
+    name: 'Notebook Style',
+    description: 'Lined paper feel, red margin rule, handwritten-friendly spacing.',
+    accent: '#B85C38',
+  },
+  {
+    id: 'modern-academic',
+    name: 'Modern Academic',
+    description: 'Bold left-aligned headings, clean grid, contemporary sans-serif.',
+    accent: '#1B4965',
+  },
+  {
+    id: 'elegant-cover',
+    name: 'Elegant Cover Page',
+    description: 'Dedicated title page with subtitle, course line, and date block.',
+    accent: '#8B1E3F',
+  },
+  {
+    id: 'simple-student',
+    name: 'Simple Student',
+    description: 'Straightforward title, bullet lists, no fuss — great for quick tasks.',
+    accent: '#6B6560',
+  },
+]
 
 export const howItWorksSteps = [
   {
