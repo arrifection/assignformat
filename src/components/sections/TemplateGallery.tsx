@@ -198,12 +198,41 @@ function MiniDocumentPreview({ variant, accent }: { variant: string; accent: str
   }
 }
 
+function ViewMoreTemplatesButton({
+  expanded,
+  onClick,
+}: {
+  expanded: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex w-full max-w-md items-center justify-center gap-2 rounded-2xl bg-primary px-8 py-4 text-base font-semibold text-white shadow-soft-lg transition-all duration-300 hover:bg-primary-dark hover:shadow-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:w-auto"
+    >
+      <LayoutTemplate className="h-5 w-5 shrink-0" />
+      {expanded ? 'Show Less' : 'View More Templates'}
+      <span className="rounded-full bg-white/20 px-2 py-0.5 text-xs font-bold">
+        {expanded ? '4' : '+6'}
+      </span>
+      {expanded ? (
+        <ChevronUp className="h-5 w-5 shrink-0" />
+      ) : (
+        <ChevronDown className="h-5 w-5 shrink-0" />
+      )}
+    </button>
+  )
+}
+
 export function TemplateGallery() {
   const [showMoreTemplates, setShowMoreTemplates] = useState(false)
 
   const visibleTemplates = showMoreTemplates
     ? templates
     : templates.slice(0, VISIBLE_DEFAULT)
+
+  const toggleTemplates = () => setShowMoreTemplates((prev) => !prev)
 
   return (
     <section id="templates" className="scroll-mt-24 bg-background py-16 sm:py-20 lg:py-24">
@@ -214,60 +243,66 @@ export function TemplateGallery() {
           description="Each template is crafted for academic clarity — preview the structure before you format."
         />
 
+        {!showMoreTemplates && templates.length > VISIBLE_DEFAULT && (
+          <div className="mb-8 flex flex-col items-center gap-2 sm:mb-10">
+            <p className="text-center text-sm text-muted">
+              Showing {VISIBLE_DEFAULT} of {templates.length} templates
+            </p>
+            <ViewMoreTemplatesButton expanded={showMoreTemplates} onClick={toggleTemplates} />
+          </div>
+        )}
+
         {templates.length === 0 ? (
           <p className="text-center text-muted">No templates available.</p>
         ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {visibleTemplates.map((template) => (
-            <article
-              key={template.id}
-              className="group overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-soft-lg"
-            >
-              <div className="relative aspect-[3/4] w-full overflow-hidden border-b border-border bg-white transition-colors group-hover:bg-[#faf8f5]">
-                <div className="absolute inset-0">
-                  <MiniDocumentPreview variant={template.id} accent={template.accent} />
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {visibleTemplates.map((template) => (
+              <article
+                key={template.id}
+                className="group flex flex-col rounded-2xl border border-border bg-card shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-soft-lg"
+              >
+                <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-t-2xl border-b border-border bg-white sm:h-44">
+                  <div className="absolute inset-0">
+                    <MiniDocumentPreview variant={template.id} accent={template.accent} />
+                  </div>
                 </div>
-              </div>
-              <div className="p-5">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-display text-lg font-semibold text-secondary">
-                    {template.name}
-                  </h3>
-                  {template.popular && (
-                    <span className="shrink-0 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-semibold text-accent">
-                      Popular
-                    </span>
-                  )}
+                <div className="flex flex-1 flex-col p-4 sm:p-5">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="font-display text-base font-semibold text-secondary sm:text-lg">
+                      {template.name}
+                    </h3>
+                    {template.popular && (
+                      <span className="shrink-0 rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-bold text-[#8B6914]">
+                        Popular
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                    {template.description}
+                  </p>
+                  <button
+                    type="button"
+                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-white shadow-soft transition-all hover:bg-primary-dark"
+                  >
+                    <Check className="h-4 w-4" />
+                    Use Template
+                  </button>
                 </div>
-                <p className="mt-2 text-sm text-muted">{template.description}</p>
-                <button
-                  type="button"
-                  className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl border border-border py-2.5 text-sm font-medium text-secondary transition-all hover:border-primary hover:bg-primary hover:text-white"
-                >
-                  <Check className="h-4 w-4 opacity-70" />
-                  Use Template
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
         )}
 
-        <div className="mt-10 flex justify-center sm:mt-12">
-          <button
-            type="button"
-            onClick={() => setShowMoreTemplates((prev) => !prev)}
-            className="inline-flex items-center gap-2 rounded-2xl border-2 border-accent/40 bg-gradient-to-r from-accent/10 via-card to-accent/5 px-8 py-3.5 font-semibold text-secondary shadow-soft transition-all duration-300 hover:border-accent hover:shadow-soft-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            <LayoutTemplate className="h-5 w-5 text-accent" />
-            {showMoreTemplates ? 'Show Less' : 'View More Templates'}
-            {showMoreTemplates ? (
-              <ChevronUp className="h-4 w-4 text-muted" />
-            ) : (
-              <ChevronDown className="h-4 w-4 text-muted" />
-            )}
-          </button>
-        </div>
+        {templates.length > VISIBLE_DEFAULT && (
+          <div className="mt-10 flex flex-col items-center gap-2 sm:mt-12">
+            <p className="text-center text-sm font-medium text-secondary">
+              {showMoreTemplates
+                ? `All ${templates.length} templates shown`
+                : `${templates.length - VISIBLE_DEFAULT} more templates available`}
+            </p>
+            <ViewMoreTemplatesButton expanded={showMoreTemplates} onClick={toggleTemplates} />
+          </div>
+        )}
       </div>
     </section>
   )
